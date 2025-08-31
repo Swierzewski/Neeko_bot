@@ -118,6 +118,11 @@ async def virus(ctx):
     member = ctx.message.author
     await comm_other.virus(ctx, member)
 
+@bot.command()
+async def search(ctx, *, string):
+    await comm_other.search_google_images(string)
+
+
 ### Run the bot
 @bot.command()
 async def paypal(ctx):
