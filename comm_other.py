@@ -136,7 +136,7 @@ def _sync_image_search(query: str) -> str | None:
     try:
         with DDGS() as ddgs:
             results = list(ddgs.images(
-                keywords=query,
+                query=query,
                 region= "fr-fr",
                 safesearch= "off",
                 max_results=1
@@ -160,4 +160,4 @@ async def search_google_images(ctx, query: str) -> str | None:
     if not image_url:
         await ctx.send(embed=make_embed("Error", "Image not found.", 0xFF5733))
     
-    return image_url
+    await ctx.send(image_url)
