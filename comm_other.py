@@ -3,7 +3,7 @@ import httpx
 from utils import *
 import discord
 import os
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 import asyncio
 
 async def question(ctx, string):
