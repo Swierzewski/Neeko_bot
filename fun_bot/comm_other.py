@@ -1,26 +1,42 @@
 import random
 import httpx
-from utils import *
+from utils import make_embed, load_gifs, save_gifs
 import discord
 import os
 from ddgs import DDGS
 import asyncio
+from ollama import AsyncClient as OllamaClient
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+_OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'llama3.2:1b')
+
+_SYSTEM_PROMPT = (
+    "Tu es un bot Discord cassant et irrespectueux. "
+    "Tu DOIS toujours commencer ta réponse par 'Oui' ou 'Non', suivi immédiatement d'une insulte ou d'une vanne sur la même ligne. "
+    "Une seule phrase, jamais plus. Jamais de politesse. Jamais d'explication. "
+    "Exemples : 'Oui, espèce d'abruti.' — 'Non, t'es sérieux là pauvre clown ?' — 'Oui, même un enfant de 5 ans le saurait, crétin.' "
+    "Réponds toujours dans la même langue que la question, mais commence toujours par 'Oui' ou 'Non'."
+)
+
 
 async def question(ctx, string):
-    random_ = random.randint(0,1000)
-    print(random_)
+    async with ctx.typing():
+        try:
+            client = OllamaClient()
+            response = await client.chat(
+                model=_OLLAMA_MODEL,
+                messages=[
+                    {'role': 'system', 'content': _SYSTEM_PROMPT},
+                    {'role': 'user', 'content': string},
+                ],
+            )
+            answer = response.message.content.strip()
+        except Exception as e:
+            print(f"Ollama error: {e}")
+            answer = "My brain short-circuited. Try again, you impatient clown."
 
-    if ctx.message.author.id == 216198628094509056 and random_ > 900:
-        await ctx.send(embed=make_embed(string, "tgl salope", 0xECF22C))
-    else:
-        if 25 >= random_ >= 0:
-            await ctx.send(embed=make_embed(string, "tgl", 0xECF22C))
-        elif 50 >= random_ >= 25:
-            await ctx.send(embed=make_embed(string, "peut-être", 0xECF22C))
-        elif 500 >= random_ >= 0:
-            await ctx.send(embed=make_embed(string, "oui", 0xECF22C))
-        elif 1000 >= random_ >= 500:
-            await ctx.send(embed=make_embed(string, "non", 0xECF22C))
+    await ctx.send(embed=make_embed(string, answer, 0xECF22C))
 
 
 async def reussite(ctx):
@@ -46,7 +62,6 @@ async def trans(ctx, source_lang: str, target_lang: str, text: str, DEEPL_AUTH_K
         await ctx.send(f"An unexpected error occurred: {e}")
 
 
-
 images_link = {
     "pussy": "micha.jpg",
     "toxic": "arnold_1.jpg",
@@ -67,11 +82,10 @@ async def image(ctx, keyword: str):
     keyword = keyword.lower()
 
     if keyword in images_link:
-        await ctx.send(file=discord.File(f'images/{images_link[keyword]}'))
+        await ctx.send(file=discord.File(os.path.join(BASE_DIR, 'images', images_link[keyword])))
     elif keyword == "salope":
-        to_take = ["pussy", "karola", "kehbah", "pute", "toxic", "louise", "toad"]
-        choosen = random.choice(to_take)
-        await ctx.send(file=discord.File(f'images/{images_link[choosen]}'))
+        choosen = random.choice(["pussy", "karola", "kehbah", "pute", "toxic", "louise", "toad"])
+        await ctx.send(file=discord.File(os.path.join(BASE_DIR, 'images', images_link[choosen])))
     else:
         await ctx.send(embed=make_embed("Error", "Keyword not found. Available keywords: " + ", ".join(images_link.keys()), 0xFF5733))
 
@@ -86,10 +100,9 @@ async def video(ctx, keyword: str):
     keyword = keyword.lower()
 
     if keyword in video_link:
-        with open (f'images/{video_link[keyword]}', "rb") as video_file:
-            video = discord.File(video_file)
-        await ctx.send(file=video)
-    else:     
+        with open(os.path.join(BASE_DIR, 'images', video_link[keyword]), "rb") as video_file:
+            await ctx.send(file=discord.File(video_file))
+    else:
         await ctx.send(embed=make_embed("Error", "Keyword not found. Available keywords: " + ", ".join(video_link.keys()), 0xFF5733))
 
 
@@ -102,7 +115,7 @@ async def add(ctx, url: str):
     if not url.startswith(('http://', 'https://')) or not any(url.endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.gif', '.mp4']):
         await ctx.send(embed=make_embed("Error", "Please provide a valid image or video URL.", 0xFF5733))
         return
-    
+
     gifs_never_give_up = load_gifs()
     if url in gifs_never_give_up:
         await ctx.send(embed=make_embed("Info", "This URL is already in the list.", 0x3498db))
@@ -113,51 +126,29 @@ async def add(ctx, url: str):
     await ctx.send(embed=make_embed("Success", "URL added to the list!", 0x2ecc71))
 
 
-async def virus(ctx, member: discord.Member):
-    file_path = "virus.exe"
-
-    if not os.path.exists(file_path):
-        await ctx.send("Error: File not found.")
-        return
-
-    embed = make_embed("Attention", "Salope n'installe pas le virus", 0xFF0000)
-
-    try:
-        await member.send(embed=embed)
-        await member.send("", file=discord.File(file_path))
-        await ctx.send(f"Sent the virus to {member.mention}.", delete_after=2)
-    except discord.Forbidden:
-        await ctx.send(f"Error: Cannot send DM to {member.mention}.")
-    except Exception as e:
-        await ctx.send(f"Error: {e}")
-
-
 def _sync_image_search(query: str) -> str | None:
     try:
         with DDGS() as ddgs:
             results = list(ddgs.images(
                 query=query,
-                region= "fr-fr",
-                safesearch= "off",
-                max_results=1
+                region="fr-fr",
+                safesearch="off",
+                max_results=20,
             ))
-            
             if results:
                 return random.choice(results)['image']
     except Exception as e:
         print(f"Error during image search: {e}")
     return None
 
-async def search_google_images(ctx, query: str) -> str | None:
+
+async def search_google_images(ctx, query: str):
     loop = asyncio.get_running_loop()
-    
-    image_url = await loop.run_in_executor(
-        None,
-        _sync_image_search,
-        query
-    )
-    
+
+    image_url = await loop.run_in_executor(None, _sync_image_search, query)
+
     if not image_url:
         await ctx.send(embed=make_embed("Error", "Image not found.", 0xFF5733))
-    
+        return
+
     await ctx.send(image_url)

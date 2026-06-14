@@ -1,2 +1,12 @@
-__pycache__/
 venv/
+.env
+images/
+*.log
+.claude/
+fun_bot/__pycache__/
+fun_bot/images/
+fun_bot/.env
+fun_bot/feedback.json
+lol_bot/.env
+lol_bot/feedback.json
+lol_bot/users.json

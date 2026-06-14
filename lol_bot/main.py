@@ -1,36 +1,30 @@
 import discord
 from discord.ext import commands
-from discord.utils import get
-from discord.ext.commands import has_permissions, CheckFailure
+from pathlib import Path
 
-from utils import *
-from riot_lol import *
-import comm_other
+from utils import make_embed
 import comm_lol
 import comm_bot
 
 from dotenv import load_dotenv
 import logging
 import os
-import random
 
-
-load_dotenv()
+load_dotenv(Path(__file__).parent / '.env')
 token = os.getenv('DISCORD_TOKEN')
-DEEPL_AUTH_KEY = os.getenv('DEEPL_AUTH_KEY')
 
-print("---START: Setup the bot")
+print("---START: Setup the LoL bot")
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-bot_prefix = '&'
+bot_prefix = '.'
 bot = commands.Bot(command_prefix=bot_prefix, description=f'{bot_prefix}help for help', intents=intents)
-print("---END : Setup the bot")
+print("---END : Setup the LoL bot")
 
-### Bot method
+
 @bot.event
 async def on_ready():
     print("Logged in as")
@@ -59,19 +53,9 @@ async def error(ctx, *, message: str):
     await comm_bot.error(ctx, message=message)
 
 
-@bot.group(invoke_without_command=True)
-async def blocus(ctx):
-    await comm_other.blocus(ctx)
-
-
-@blocus.command(name="add")
-async def add(ctx, url: str):
-    await comm_other.add(ctx, url)
-
-
 @bot.command()
-async def trans(ctx, source_lang: str, target_lang: str, *, text: str):
-    await comm_other.trans(ctx, source_lang, target_lang, text, DEEPL_AUTH_KEY)
+async def unregister(ctx):
+    await comm_bot.unregister(ctx)
 
 
 @bot.command()
@@ -85,6 +69,11 @@ async def lastgame(ctx, *, summoner_input: str = None):
 
 
 @bot.command()
+async def history(ctx, count: int = 5, *, summoner_input: str = None):
+    await comm_lol.history(ctx, count, summoner_input=summoner_input)
+
+
+@bot.command()
 async def played(ctx, *, summoner_input: str = None):
     await comm_lol.played(ctx, summoner_input)
 
@@ -95,45 +84,21 @@ async def streak(ctx, *, summoner_input: str = None):
 
 
 @bot.command()
-async def réussite(ctx):
-    await comm_other.reussite(ctx)
+async def mastery(ctx, *, summoner_input: str = None):
+    await comm_lol.mastery(ctx, summoner_input)
 
 
 @bot.command()
-async def question(ctx, *, string):
-    await comm_other.question(ctx, string=string)
-
-
-@bot.command()
-async def image(ctx, keyword: str):
-    await comm_other.image(ctx, keyword)
-
-
-@bot.command()
-async def video(ctx, keyword: str):
-    await comm_other.video(ctx, keyword)
-
-@bot.command()
-async def virus(ctx):
-    member = ctx.message.author
-    await comm_other.virus(ctx, member)
-
-@bot.command()
-async def search(ctx, *, string):
-    await comm_other.search_google_images(ctx, string)
-
-
-### Run the bot
-@bot.command()
-async def paypal(ctx):
-    await ctx.send(
-        embed=make_embed("SVP", "Pour le mariage, voici mon [paypal](https://paypal.me/swierzewski).", 0xECF22C))
+async def livegame(ctx, *, summoner_input: str = None):
+    await comm_lol.livegame(ctx, summoner_input)
 
 
 bot.remove_command('help')
+
+
 @bot.command()
 async def help(ctx, category: str = None):
     await comm_bot.help(ctx, category, bot_prefix)
 
 
-bot.run(token)
+bot.run(token, log_handler=handler)
