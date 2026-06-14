@@ -1,6 +1,6 @@
 # Neeko Bot
 
-A Discord bot split into two independent bots that share the same prefix (`&`):
+A Discord bot split into two independent bots that share the same prefix (`.`):
 
 - **LoL Bot** (`lol_bot/`) — League of Legends stats and profile management via the Riot API
 - **Fun Bot** (`fun_bot/`) — Fun commands: images, translation, random answers, and more
@@ -51,7 +51,7 @@ Each bot stores its data in its own folder:
 
 The bot creates these files automatically on first use.
 
-The fun_bot also requires an `images/` folder inside `fun_bot/` for the `&image` and `&video` commands.
+The fun_bot also requires an `images/` folder inside `fun_bot/` for the `.image` and `.video` commands.
 
 ### Running
 
@@ -66,36 +66,36 @@ cd fun_bot && python main.py
 
 ## LoL Bot — Commands
 
-All commands use the prefix `&`. Arguments in `<>` are required, `[]` are optional.  
+All commands use the prefix `.`. Arguments in `<>` are required, `[]` are optional.  
 If `[Summoner#TAG]` is omitted, the bot uses your registered account.
 
 ### Profile
 
 | Command | Description |
 |---------|-------------|
-| `&register <Summoner> <Tag>` | Link your Riot account to your Discord |
-| `&unregister` | Remove your linked account |
-| `&profile` | View your linked account |
+| `.register <Summoner> <Tag>` | Link your Riot account to your Discord |
+| `.unregister` | Remove your linked account |
+| `.profile` | View your linked account |
 
 ### League of Legends
 
 | Command | Description |
 |---------|-------------|
-| `&rank [Summoner#TAG]` | Show Solo/Duo and Flex rank with LP and winrate |
-| `&lastgame [Summoner#TAG]` | Show the most recent game (champion, KDA, result) |
-| `&history [count=5] [Summoner#TAG]` | Show last N games as a compact list (max 10) |
-| `&played [Summoner#TAG]` | Show time played today and this week |
-| `&streak [Summoner#TAG]` | Show current win or loss streak |
-| `&mastery [Summoner#TAG]` | Show top 5 champion masteries with points |
-| `&livegame [Summoner#TAG]` | Show current in-game status, champion, and duration |
+| `.rank [Summoner#TAG]` | Show Solo/Duo and Flex rank with LP and winrate |
+| `.lastgame [Summoner#TAG]` | Show the most recent game (champion, KDA, result) |
+| `.history [count=5] [Summoner#TAG]` | Show last N games as a compact list (max 10) |
+| `.played [Summoner#TAG]` | Show time played today and this week |
+| `.streak [Summoner#TAG]` | Show current win or loss streak |
+| `.mastery [Summoner#TAG]` | Show top 5 champion masteries with points |
+| `.livegame [Summoner#TAG]` | Show current in-game status, champion, and duration |
 
 ### Other
 
 | Command | Description |
 |---------|-------------|
-| `&hello` | Say hello to the bot |
-| `&error <message>` | Report a bug or send feedback |
-| `&help [category]` | Show commands — categories: `profile`, `lol` |
+| `.hello` | Say hello to the bot |
+| `.error <message>` | Report a bug or send feedback |
+| `.help [category]` | Show commands — categories: `profile`, `lol`, `other` |
 
 ---
 
@@ -105,23 +105,23 @@ If `[Summoner#TAG]` is omitted, the bot uses your registered account.
 
 | Command | Description |
 |---------|-------------|
-| `&blocus` | Send a random motivational gif |
-| `&blocus add <url>` | Add a gif/image URL to the blocus list |
-| `&réussite` | Get your session success percentage |
-| `&question <message>` | Ask the bot a yes/no question |
-| `&image <name>` | Send a saved image by keyword |
-| `&video <name>` | Send a saved video by keyword |
-| `&search <query>` | Search and post an image from the web |
-| `&trans <from> <to> <text>` | Translate text with DeepL (e.g. `&trans EN FR Hello`) |
-| `&hello` | Say hello to the bot |
-| `&error <message>` | Report a bug or send feedback |
-| `&paypal` | Get the PayPal link |
+| `.blocus` | Send a random motivational gif |
+| `.blocus add <url>` | Add a gif/image URL to the blocus list |
+| `.réussite` | Get your session success percentage |
+| `.question <message>` | Ask the bot a yes/no question |
+| `.image <name>` | Send a saved image by keyword |
+| `.video <name>` | Send a saved video by keyword |
+| `.search <query>` | Search and post an image from the web |
+| `.trans <from> <to> <text>` | Translate text with DeepL (e.g. `.trans EN FR Hello`) |
+| `.hello` | Say hello to the bot |
+| `.error <message>` | Report a bug or send feedback |
+| `.paypal` | Get the PayPal link |
 
 ### Help
 
 | Command | Description |
 |---------|-------------|
-| `&help [category]` | Show commands — categories: `other` |
+| `.help [category]` | Show commands — categories: `other` |
 
 ---
 

@@ -7,7 +7,7 @@ async def help(ctx, category: str = None, bot_prefix: str = "&"):
     if category is None:
         embed = discord.Embed(
             title="LoL Bot Help",
-            description=f"Use `{bot_prefix}help <category>` to see commands.\n**Categories:** `profile`, `lol`",
+            description=f"Use `{bot_prefix}help <category>` to see commands.\n**Categories:** `profile`, `lol`, `other`",
             color=0xeee657,
         )
         await ctx.send(embed=embed)
@@ -31,8 +31,13 @@ async def help(ctx, category: str = None, bot_prefix: str = "&"):
         embed.add_field(name=f"{bot_prefix}mastery [Summoner#TAG]", value="Show top 5 champion masteries", inline=False)
         embed.add_field(name=f"{bot_prefix}livegame [Summoner#TAG]", value="Show current in-game status and champion", inline=False)
 
+    elif category == "other":
+        embed = discord.Embed(title="Other Commands", color=0x2ecc71)
+        embed.add_field(name=f"{bot_prefix}hello", value="Say hello to the bot", inline=False)
+        embed.add_field(name=f"{bot_prefix}error <message>", value="Report a bug or send feedback", inline=False)
+
     else:
-        embed = make_embed("Error", "Invalid category. Please use `profile` or `lol`.", 0xFF0000)
+        embed = make_embed("Error", "Invalid category. Please use `profile`, `lol`, or `other`.", 0xFF0000)
 
     await ctx.send(embed=embed)
 
