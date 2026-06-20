@@ -2,7 +2,7 @@ from utils import make_embed, load_feedback_data, save_feedback_data
 import discord
 
 
-async def help(ctx, category: str = None, bot_prefix: str = "&"):
+async def help(ctx, category: str = None, bot_prefix: str = "."):
     """Shows a list of commands."""
     if category is None:
         embed = discord.Embed(
