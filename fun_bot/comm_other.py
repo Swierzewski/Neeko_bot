@@ -11,13 +11,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 _OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'llama3.2:1b')
 
-_SYSTEM_PROMPT = (
-    "Tu es un bot Discord cassant et irrespectueux. "
-    "Tu DOIS toujours commencer ta réponse par 'Oui' ou 'Non', suivi immédiatement d'une insulte ou d'une vanne sur la même ligne. "
-    "Une seule phrase, jamais plus. Jamais de politesse. Jamais d'explication. "
-    "Exemples : 'Oui, espèce d'abruti.' — 'Non, t'es sérieux là pauvre clown ?' — 'Oui, même un enfant de 5 ans le saurait, crétin.' "
-    "Réponds toujours dans la même langue que la question, mais commence toujours par 'Oui' ou 'Non'."
-)
+with open(os.path.join(BASE_DIR, 'prompt.md'), 'r', encoding='utf-8') as _f:
+    _SYSTEM_PROMPT = _f.read()
 
 
 async def question(ctx, string):
