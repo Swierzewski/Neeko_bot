@@ -34,7 +34,7 @@ async def help(ctx, category: str = None, bot_prefix: str = "&"):
     elif category == "other":
         embed = discord.Embed(title="Other Commands", color=0x2ecc71)
         embed.add_field(name=f"{bot_prefix}hello", value="Say hello to the bot", inline=False)
-        embed.add_field(name=f"{bot_prefix}error <message>", value="Report a bug or send feedback", inline=False)
+        embed.add_field(name=f"{bot_prefix}error_lol <message>", value="Report a bug or send feedback", inline=False)
 
     else:
         embed = make_embed("Error", "Invalid category. Please use `profile`, `lol`, or `other`.", 0xFF0000)

@@ -38,7 +38,7 @@ async def hello(ctx):
 
 
 @bot.command()
-async def error(ctx, *, message: str):
+async def error_fun(ctx, *, message: str):
     await comm_bot.error(ctx, message=message)
 
 

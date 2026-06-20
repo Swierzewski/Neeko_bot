@@ -94,7 +94,7 @@ If `[Summoner#TAG]` is omitted, the bot uses your registered account.
 | Command | Description |
 |---------|-------------|
 | `.hello` | Say hello to the bot |
-| `.error <message>` | Report a bug or send feedback |
+| `.error_lol <message>` | Report a bug or send feedback |
 | `.help [category]` | Show commands — categories: `profile`, `lol`, `other` |
 
 ---
@@ -114,7 +114,7 @@ If `[Summoner#TAG]` is omitted, the bot uses your registered account.
 | `.search <query>` | Search and post an image from the web |
 | `.trans <from> <to> <text>` | Translate text with DeepL (e.g. `.trans EN FR Hello`) |
 | `.hello` | Say hello to the bot |
-| `.error <message>` | Report a bug or send feedback |
+| `.error_fun <message>` | Report a bug or send feedback |
 | `.paypal` | Get the PayPal link |
 
 ### Help

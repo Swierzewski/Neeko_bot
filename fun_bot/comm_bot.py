@@ -26,7 +26,7 @@ async def help(ctx, category: str = None, bot_prefix: str = "&"):
         embed.add_field(name=f"{bot_prefix}search <query>", value="Search and post an image from the web", inline=False)
         embed.add_field(name=f"{bot_prefix}trans <from> <to> <text>", value="Translate text with DeepL (e.g. EN FR Hello)", inline=False)
         embed.add_field(name=f"{bot_prefix}hello", value="Say hello to the bot", inline=False)
-        embed.add_field(name=f"{bot_prefix}error <message>", value="Report a bug or send feedback", inline=False)
+        embed.add_field(name=f"{bot_prefix}error_fun <message>", value="Report a bug or send feedback", inline=False)
         embed.add_field(name=f"{bot_prefix}paypal", value="Get the PayPal link", inline=False)
 
     else:
